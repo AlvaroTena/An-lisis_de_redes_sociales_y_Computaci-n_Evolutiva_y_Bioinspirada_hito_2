@@ -20,7 +20,18 @@ En esta práctica detectaremos comunidades en grafos usando algoritmos evolutivo
 El objetivo de este ejercicio es doble, por un lado, estudiaremos las limitaciones de la Modularidad a la hora de detectar comunidades con tamaños muy desbalanceados; por otro lado, estudiaremos la capacidad de los algoritmos multiobjetivo para analizar una red en
 distintos niveles jerárquicos.
 
-## Ejercicio
+## Replicar experimento
+
+Usar [hito2](./hito2.ipynb). Para poder ejecutar este notebook, es necesario instalar las siguientes librerías:
+
+* ``networkx``
+* ``python-igraph``
+* ``cdlib``
+* ``igraph``
+* ``leidenalg``
+* ``optuna``
+
+## Ejercicios
 
 ### Apartado A - Detección de comunidades con el algoritmo de Leiden
 
@@ -47,24 +58,11 @@ Se ha diseñado un algoritmo evolutivo multiobjetivo capaz de detectar comunidad
 
 #### Funciones multiobjetivo
 
-Para poder realizar sobre el ejercicio, una mayor variación de funciones multiobjetivo, se ha decidido seleccionar varias funciones objetivo, teniendo en cuenta cual es el objetivo de cada una, es decir, si maximizar o minizar. La combinación de cada una de estas funciones se ha guardado en un array para poder usar a posteriori. Esto, aunque parezca una variación muy grande de combinatorias, es una práctica que se ha realizado para estudiar si es una buena opción usar esta técnica en genéticos.
+En base al paper "Comparison and selection of objective functions in multiobjective community detection", se han usado las funciones objetivo que cuyo valor de correlación es mayor a `0.4`.
 
-```py
-objective_functions = {
-    "conductance": ("Minimize", conductance),
-    "expansion": ("Minimize", expansion),
-    "cut_ratio": ("Minimize", cut_ratio),
-    "normalized_cut": ("Minimize", normalized_cut),
-    "maximum_odf": ("Minimize", maximum_odf),
-    "average_odf": ("Minimize", average_odf),
-    "flake_odf": ("Minimize", flake_odf),
-    "modularity_Q": ("Maximize", modularity_Q),
-    "description_length": ("Minimize", description_length),
-    "community_score": ("Maximize", community_score),
-    "internal_density": ("Maximize", internal_density),
-    # "diversity": ("Maximize", diversity)
-}
-```
+* `multi_objective_community_density`. La función multiobjetivo de las funciones `community_score` y `internal_density`.
+* `multi_objective_community_averageodf`. La función multiobjetivo de las funciones `community_score` y `average_odf`.
+* `multi_objective_density_modularity`. La función multiobjetivo de las funciones `internal_density` y `modularity_Q`.
 
 #### Selección
 
@@ -88,14 +86,6 @@ Lo mismo que con el "cruce", se han creado varias mutaciones para tener un mayor
 * `mutate_merge_communities`. Si se tiene más de una comunidad en el grafo, entonces se seleccionan dos de forma aleatoria y para cada individuo en la comunidad 2, se asigna aleatoriamente el valor de un individuo que se encuentra en la comunidad 1.
 * `mutate_split_community`. Si existen comunidades, se selecciona una comunidad de forma aleatoria. Se crea una nueva comunidad a la que se le asignan los individuos que pasan un umbral. De esta forma, como su nombre indica, se realiza una separación de comunidad.
 * `mutate_random_reassignment`. Se selecciona un nodo de forma aleatoria. Si pasa el umbral, se le asigna una comunidad existente, en caso contrario, se crea una nueva comunidad.
-
-#### Reemplazo
-
-NSGA-II
-
-#### Hiperparametros
-
-Escoge ``mutation_rate`` y el ``migration_rate`` de una normal (0, 1).
 
 ## References
 
