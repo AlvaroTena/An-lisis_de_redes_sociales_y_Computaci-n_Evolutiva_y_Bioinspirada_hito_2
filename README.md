@@ -31,6 +31,8 @@ Usar [hito2](./hito2.ipynb). Para poder ejecutar este notebook, es necesario ins
 * ``leidenalg``
 * ``optuna``
 
+Se requiere de un archivo `.graphml` en la carpeta `data`.
+
 ## Ejercicios
 
 ### Apartado A - Detección de comunidades con el algoritmo de Leiden
